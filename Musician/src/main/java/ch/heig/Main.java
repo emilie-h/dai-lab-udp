@@ -1,17 +1,55 @@
 package ch.heig;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.DatagramPacket;
+import java.net.InetSocketAddress;
+import java.util.HashMap;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+import static java.nio.charset.StandardCharsets.*;
+
+class Musician {
+    final static String IPADDRESS = "239.255.22.5";
+    final static int PORT = 9904;
+
+
+    public static void main(String[] args) {
+        HashMap<String, String> instruments = new HashMap<>();
+        instruments.put("piano", "ti-ta-ti");
+        instruments.put("trumpet", "pouet");
+        instruments.put("flute", "trulu");
+        instruments.put("violin", "gzi-gzi");
+        instruments.put("drum", "boum-boum");
+
+        // get instrument from command line arguments
+        String instrument = args[0];
+        if (instrument == null) {
+            System.out.println("Please specify an instrument");
+            System.exit(1);
+        } else if (!instruments.containsKey(instrument)) {
+            System.out.println("Please specify a valid instrument");
+            System.exit(1);
         }
+        play(instrument, instruments);
+
+    }
+
+    static void play(String instrument, HashMap<String, String> instruments) {
+        try (DatagramSocket socket = new DatagramSocket()) {
+            while (true) {
+                String sound = instruments.get(instrument);
+                byte[] payload = sound.getBytes(UTF_8);
+                InetSocketAddress dest_address = new InetSocketAddress(IPADDRESS, PORT);
+                var packet = new DatagramPacket(payload, payload.length, dest_address);
+                socket.send(packet);
+                Thread.sleep(1000);
+            }
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
