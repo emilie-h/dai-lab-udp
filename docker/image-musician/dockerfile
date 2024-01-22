@@ -3,5 +3,8 @@ RUN apk add --no-cache openjdk21
 WORKDIR /app
 COPY Musician/target/Musician-1.0-jar-with-dependencies.jar /app/app.jar
 
-CMD ["java", "-jar", "app.jar"]
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Define the default command to run when the container starts
+CMD ["java", "-jar", "/app/app.jar"]
+
+# Set the command-line argument as an environment variable
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
