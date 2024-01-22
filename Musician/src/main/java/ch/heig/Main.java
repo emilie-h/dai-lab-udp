@@ -42,6 +42,7 @@ class Musician {
                 InetSocketAddress dest_address = new InetSocketAddress(IPADDRESS, PORT);
                 var packet = new DatagramPacket(payload, payload.length, dest_address);
                 socket.send(packet);
+                System.out.println("Sent " + sound);
                 Thread.sleep(1000);
             }
 
