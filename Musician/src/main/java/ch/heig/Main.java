@@ -9,8 +9,9 @@ import java.util.HashMap;
 import static java.nio.charset.StandardCharsets.*;
 
 class Musician {
-    final static String IPADDRESS = "239.255.22.5";
-    final static int PORT = 9904;
+    private final static String IPADDRESS = "239.255.22.5";
+    private final static int PORT = 9904;
+    private final static int SLEEP_TIME = 1000;
 
 
     public static void main(String[] args) {
@@ -42,8 +43,10 @@ class Musician {
                 InetSocketAddress dest_address = new InetSocketAddress(IPADDRESS, PORT);
                 var packet = new DatagramPacket(payload, payload.length, dest_address);
                 socket.send(packet);
+
+                //TODO: remove print
                 System.out.println("Sent " + sound);
-                Thread.sleep(1000);
+                Thread.sleep(SLEEP_TIME);
             }
 
         } catch (IOException ex) {
