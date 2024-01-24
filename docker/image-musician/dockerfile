@@ -1,7 +1,7 @@
 FROM alpine:latest
 RUN apk add --no-cache openjdk21
 WORKDIR /app
-COPY Musician/target/Musician-1.0-jar-with-dependencies.jar /app/app.jar
+COPY docker/image-musician/target/Musician-1.0-jar-with-dependencies.jar /app/app.jar
 
 # Define the default command to run when the container starts
 CMD ["java", "-jar", "/app/app.jar"]

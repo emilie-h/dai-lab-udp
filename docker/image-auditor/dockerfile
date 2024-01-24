@@ -1,0 +1,10 @@
+FROM alpine:latest
+RUN apk add --no-cache openjdk21
+WORKDIR /app
+COPY docker/image-auditor/target/Auditor-1.0-jar-with-dependencies.jar /app/app.jar
+
+# Define the default command to run when the container starts
+CMD ["java", "-jar", "/app/app.jar"]
+
+# Set the command-line argument as an environment variable
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
