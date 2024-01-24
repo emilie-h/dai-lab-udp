@@ -1,5 +1,7 @@
 package ch.heig;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
@@ -38,14 +40,18 @@ class Musician {
     static void play(String instrument, HashMap<String, String> instruments) {
         try (DatagramSocket socket = new DatagramSocket()) {
             while (true) {
+                // retrieve sound in hashmap
                 String sound = instruments.get(instrument);
-                byte[] payload = sound.getBytes(UTF_8);
+                // create datagram
+                MusicianDatagram datagram = new MusicianDatagram(sound);
+                // serialize datagram
+                String json = new Gson().toJson(datagram);
+                // send datagram
+                byte[] payload = json.getBytes(UTF_8);
                 InetSocketAddress dest_address = new InetSocketAddress(IPADDRESS, PORT);
                 var packet = new DatagramPacket(payload, payload.length, dest_address);
                 socket.send(packet);
 
-                //TODO: remove print
-                System.out.println("Sent " + sound);
                 Thread.sleep(SLEEP_TIME);
             }
 
