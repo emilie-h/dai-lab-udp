@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Musician {
+
     UUID id;
     Instrument instrument;
     Date lastActivity;

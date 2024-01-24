@@ -10,10 +10,10 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
-        List<Musician> l = Collections.synchronizedList(new ArrayList<Musician>());
+        Map<UUID, Musician> musicians = Collections.synchronizedMap(new HashMap<>());
 
-        Server server = new Server();
-        Receiver receiver = new Receiver();
+        Server server = new Server(musicians);
+        Receiver receiver = new Receiver(musicians);
         receiver.StartServer(IPADDRESS, PORT);
         server.StartServer(1234);
 
