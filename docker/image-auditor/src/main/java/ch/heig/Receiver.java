@@ -5,6 +5,8 @@ import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,6 +17,11 @@ public class Receiver {
 
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private volatile boolean isRunning = true;
+    private Map<UUID, Musician> musicians;
+
+    public Receiver(Map<UUID, Musician> musicians) {
+        this.musicians = musicians;
+    }
 
     public void setRunning(boolean running) {
         isRunning = running;
@@ -33,6 +40,8 @@ public class Receiver {
                 while (isRunning) {
                     socket.receive(packet);
                     String message = new String(packet.getData(), 0, packet.getLength(), UTF_8);
+                    new Gson().fromJson(message, Musician.class);
+                    musicians.put();
                     System.out.println("Received message: " + message + " from " + packet.getAddress() + ", port " + packet.getPort());
                 }
 
