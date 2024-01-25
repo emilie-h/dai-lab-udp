@@ -1,5 +1,7 @@
 package ch.heig;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -17,10 +19,15 @@ public class Musician {
 }
 
 enum Instrument {
+    @SerializedName("piano")
     PIANO("ti-ta-ti"),
+    @SerializedName("trumpet")
     TRUMPET("pouet"),
+    @SerializedName("flute")
     FLUTE("trulu"),
+    @SerializedName("violin")
     VIOLIN("gzi-gzi"),
+    @SerializedName("drum")
     DRUM("boum-boum");
 
     private final String sound;
