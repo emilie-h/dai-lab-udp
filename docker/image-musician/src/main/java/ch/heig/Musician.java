@@ -38,18 +38,19 @@ class Musician {
     }
 
     static void play(String instrument, HashMap<String, String> instruments) {
+        String sound = instruments.get(instrument);
+        MusicianDatagram datagram = new MusicianDatagram(sound);
+        String json = new Gson().toJson(datagram);
+        byte[] payload = json.getBytes(UTF_8);
+        InetSocketAddress dest_address = new InetSocketAddress(IPADDRESS, PORT);
+        var packet = new DatagramPacket(payload, payload.length, dest_address);
+
         try (DatagramSocket socket = new DatagramSocket()) {
             while (true) {
                 // retrieve sound in hashmap
-                String sound = instruments.get(instrument);
                 // create datagram
-                MusicianDatagram datagram = new MusicianDatagram(sound);
                 // serialize datagram
-                String json = new Gson().toJson(datagram);
                 // send datagram
-                byte[] payload = json.getBytes(UTF_8);
-                InetSocketAddress dest_address = new InetSocketAddress(IPADDRESS, PORT);
-                var packet = new DatagramPacket(payload, payload.length, dest_address);
                 socket.send(packet);
 
                 Thread.sleep(SLEEP_TIME);
