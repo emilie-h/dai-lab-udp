@@ -1,7 +1,14 @@
-FROM alpine:latest
-RUN apk add --no-cache openjdk21
+FROM maven:latest AS build
+
 WORKDIR /app
-COPY image-musician/target/Musician-1.0-jar-with-dependencies.jar /app/app.jar
+COPY docker/image-auditor/pom.xml ./pom.xml
+COPY docker/image-auditor/src ./src
+
+RUN mvn clean package -DskipTests
+
+FROM openjdk:21
+WORKDIR /app
+COPY --from=build /app/target/*.jar /app/app.jar
 
 # Define the default command to run when the container starts
 CMD ["java", "-jar", "/app/app.jar"]
