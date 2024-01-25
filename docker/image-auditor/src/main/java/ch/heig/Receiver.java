@@ -39,6 +39,7 @@ public class Receiver {
                 byte[] buffer = new byte[1024];
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 Gson gson = new Gson();
+                System.out.println("Lisening");
                 while (isRunning) {
                     socket.receive(packet);
                     String message = new String(packet.getData(), 0, packet.getLength(), UTF_8);

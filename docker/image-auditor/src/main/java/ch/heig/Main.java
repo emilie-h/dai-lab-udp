@@ -1,6 +1,7 @@
 package ch.heig;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Main {
 
@@ -10,7 +11,8 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
-        Map<UUID, Musician> musicians = Collections.synchronizedMap(new HashMap<>());
+        Map<UUID, Musician> musicians = new ConcurrentHashMap<>();
+//        Map<UUID, Musician> musicians = Collections.synchronizedMap(new HashMap<>());
 
         Server server = new Server(musicians);
         Receiver receiver = new Receiver(musicians);
