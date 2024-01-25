@@ -1,14 +1,15 @@
 package ch.heig;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 class Server {
 
@@ -30,7 +31,14 @@ class Server {
                 while (isRunning) {
                     try (Socket client = serverSocket.accept()) {
                         System.out.println(musicians.size());
-                        client.getOutputStream().write("Hello World!".getBytes(UTF_8));
+                        Date now = new Date();
+                        now.setTime(now.getTime() - 5000);
+                        for (UUID uuid : musicians.keySet()) {
+                            if (now.compareTo(musicians.get(uuid).lastActivity) > 0) {
+                                musicians.remove(uuid);
+                            }
+                        }
+                        client.getOutputStream().write(new Gson().toJson(musicians.values()).getBytes());
                     }
                 }
             } catch (IOException ex) {
