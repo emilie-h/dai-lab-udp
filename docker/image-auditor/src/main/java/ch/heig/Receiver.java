@@ -1,5 +1,7 @@
 package ch.heig;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
@@ -36,12 +38,12 @@ public class Receiver {
 
                 byte[] buffer = new byte[1024];
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-
+                Gson gson = new Gson();
                 while (isRunning) {
                     socket.receive(packet);
                     String message = new String(packet.getData(), 0, packet.getLength(), UTF_8);
-                    new Gson().fromJson(message, Musician.class);
-                    musicians.put();
+                    MusicianDTO musician = gson.fromJson(message, MusicianDTO.class);
+                    musicians.put(musician.getUuid(), new Musician(musician.getUuid(), musician.getInstrument()));
                     System.out.println("Received message: " + message + " from " + packet.getAddress() + ", port " + packet.getPort());
                 }
 

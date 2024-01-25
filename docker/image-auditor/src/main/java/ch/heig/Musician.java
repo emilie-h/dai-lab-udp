@@ -8,6 +8,12 @@ public class Musician {
     UUID id;
     Instrument instrument;
     Date lastActivity;
+
+    public Musician(UUID uuid, Instrument instrument) {
+        this.id = uuid;
+        this.instrument = instrument;
+        this.lastActivity = new Date();
+    }
 }
 
 enum Instrument {
